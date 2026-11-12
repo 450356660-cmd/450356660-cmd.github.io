@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title data-brand="cn">空白视觉 · Blank Vision — 品牌影像与创意</title>
+<meta name="description" content="空白视觉 Blank Vision —— 你负责想成为谁，我们负责让世界看见。视频拍摄、CG 三维动画、AI 动画与营销全案。">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:title" content="空白视觉 Blank Vision · 让世界看见">
+<meta property="og:description" content="你负责想成为谁，我们负责让世界看见。影像 · CG · AI 内容一体化交付。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/work/case-01.jpg">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+/* ============================================================
+   曜合传媒 / YAOHE STUDIO — brand site
+   单文件站点：HTML + CSS + 原生 JS，无构建步骤，可直接托管于 GitHub Pages
+   改品牌信息 → 见文件底部 CONFIG 对象；改文案 → 见 I18N 词典
+   ============================================================ */
+
+:root{
+  --ink:#0a0a0a;
+  --ink-2:#121211;
+  --paper:#f2efe9;
+  --paper-dim:rgba(242,239,233,.62);
+  --paper-faint:rgba(242,239,233,.38);
+  --gold:#c6a667;
+  --line:rgba(242,239,233,.13);
+  --line-strong:rgba(242,239,233,.28);
+  --ease:cubic-bezier(.2,.75,.2,1);
+  --sans:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Playfair Display","Times New Roman","Songti SC","STSong","Noto Serif SC",serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+  --pad:clamp(20px,5vw,80px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img,video{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:#0a0a0a}
+
+/* 颗粒质感 */
+.grain{
+  position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 顶部滚动进度 */
+.progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:150;background:transparent}
+.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .1s linear}
+
+/* ---------- 导航 ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:120;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:20px var(--pad);
+  transition:background .5s var(--ease),padding .5s var(--ease),border-color .5s;
+  border-bottom:1px solid transparent;
+}
+.nav.solid{background:rgba(10,10,10,.82);backdrop-filter:blur(18px) saturate(140%);border-bottom-color:var(--line);padding:14px var(--pad)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.02em}
+.brand svg{width:22px;height:22px;fill:var(--paper);flex:none}
+.brand small{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--paper-faint);text-transform:uppercase;margin-left:2px}
+
+.nav-links{display:flex;align-items:center;gap:30px;font-size:13px;letter-spacing:.06em}
+.nav-links a{position:relative;color:var(--paper-dim);transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .4s var(--ease)}
+.nav-links a:hover{color:var(--paper)}
+.nav-links a:hover::after{width:100%}
+
+.nav-right{display:flex;align-items:center;gap:14px}
+.lang{display:flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;padding:3px;font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+.lang button{
+  border:0;background:none;color:var(--paper-faint);padding:5px 10px;border-radius:999px;
+  cursor:pointer;font:inherit;transition:.3s;
+}
+.lang button.on{background:var(--paper);color:var(--ink);font-weight:600}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line-strong);
+  padding:11px 20px;border-radius:999px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--mono);transition:.4s var(--ease);white-space:nowrap;
+}
+.btn:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn--gold{background:var(--gold);border-color:var(--gold);color:#0a0a0a}
+.btn--gold:hover{background:var(--paper);border-color:var(--paper)}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
+.burger{display:none;width:38px;height:38px;border:1px solid var(--line-strong);border-radius:50%;background:none;cursor:pointer;position:relative}
+.burger i{position:absolute;left:11px;right:11px;height:1px;background:var(--paper);transition:.3s}
+.burger i:nth-child(1){top:15px}
+.burger i:nth-child(2){top:22px}
+
+/* 移动端菜单 */
+.sheet{
+  position:fixed;inset:0;z-index:110;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 var(--pad);
+  transform:translateY(-100%);transition:transform .7s var(--ease);
+}
+.sheet.open{transform:none}
+.sheet a{font-size:clamp(30px,9vw,46px);font-family:var(--serif);letter-spacing:-.01em;padding:8px 0;border-bottom:1px solid var(--line)}
+
+/* ---------- 通用版式 ---------- */
+.wrap{padding-inline:var(--pad)}
+section{position:relative}
+.label{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:12px;margin:0 0 22px;
+}
+.label::before{content:"";width:26px;height:1px;background:var(--gold);opacity:.7}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-bottom:clamp(38px,6vw,72px)}
+h2{font-size:clamp(28px,4.4vw,58px);line-height:1.12;letter-spacing:-.02em;margin:0;font-weight:500;max-width:20ch}
+h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold)}
+.lead{color:var(--paper-dim);font-size:clamp(14.5px,1.15vw,17px);line-height:1.85;max-width:56ch}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- HERO ---------- */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:120px var(--pad) 30px;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 78% 8%,rgba(198,166,103,.16),transparent 60%),
+    radial-gradient(90% 80% at 12% 92%,rgba(60,80,120,.22),transparent 62%),
+    linear-gradient(#0d0d0c,#0a0a0a 70%);
+}
+.hero-media{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero-media video,.hero-media .fallback{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.hero-media .fallback{
+  background:
+    radial-gradient(70% 60% at 70% 30%,rgba(198,166,103,.22),transparent 70%),
+    radial-gradient(60% 60% at 20% 70%,rgba(40,60,100,.35),transparent 70%),
+    #0b0b0a;
+}
+.hero-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,.72) 0%,rgba(10,10,10,.35) 42%,rgba(10,10,10,.92) 100%);
+}
+.hero-inner{position:relative;z-index:2;width:100%}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--paper-dim);margin:0 0 clamp(18px,3vw,32px);display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.eyebrow span{color:var(--gold)}
+h1{margin:0;font-weight:500;letter-spacing:-.035em;line-height:.94;font-size:clamp(46px,10.2vw,148px)}
+h1 .line{display:block;overflow:hidden}
+h1 .line>span{display:block}
+h1 .line--2>span{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold);letter-spacing:-.02em}
+.hero-sub{
+  margin:clamp(22px,3vw,34px) 0 0;max-width:46ch;color:var(--paper-dim);
+  font-size:clamp(14px,1.15vw,17px);line-height:1.9;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(26px,3.4vw,40px)}
+.hero-foot{
+  position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+  margin-top:clamp(40px,7vw,86px);padding-top:20px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-faint);
+}
+.hero-foot .scroll{display:flex;align-items:center;gap:10px}
+.hero-foot .scroll i{display:block;width:1px;height:34px;background:linear-gradient(var(--gold),transparent);animation:drop 2.4s var(--ease) infinite}
+@keyframes drop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+
+/* ---------- 跑马灯 ---------- */
+.marquee{
+  border-block:1px solid var(--line);overflow:hidden;padding:16px 0;background:rgba(255,255,255,.015);
+}
+.marquee-track{display:flex;width:max-content;animation:slide 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{
+  display:flex;align-items:center;gap:28px;padding-right:28px;
+  font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);white-space:nowrap;
+}
+.marquee-track span::after{content:"✳";color:var(--gold);font-size:11px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------- ABOUT ---------- */
+.about{padding:clamp(72px,11vw,150px) 0}
+.about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,90px);align-items:start}
+.about-copy p{color:var(--paper-dim);line-height:1.9;margin:0 0 20px;font-size:clamp(14px,1.1vw,16.5px)}
+.about-copy p:first-child{color:var(--paper);font-size:clamp(16px,1.4vw,20px);line-height:1.8}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:clamp(40px,6vw,64px);
+  background:var(--line);border:1px solid var(--line);
+}
+.stat{background:var(--ink);padding:clamp(20px,2.6vw,32px)}
+.stat b{display:block;font-family:var(--serif);font-size:clamp(34px,4.6vw,56px);font-weight:400;line-height:1;letter-spacing:-.02em}
+.stat b i{font-style:normal;color:var(--gold);font-size:.5em;vertical-align:super}
+.stat span{display:block;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-faint)}
+
+/* ---------- WORK ---------- */
+.work{padding:clamp(60px,9vw,130px) 0 clamp(70px,10vw,140px);border-top:1px solid var(--line)}
+.work-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(34px,5vw,56px)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(14px,2vw,26px)}
+.card{grid-column:span 3;position:relative;cursor:pointer}
+.card:nth-child(1),.card:nth-child(6){grid-column:span 6}
+.card-media{
+  position:relative;overflow:hidden;background:#141413;aspect-ratio:16/10;
+  border:1px solid var(--line);
+}
+.card:nth-child(1) .card-media,.card:nth-child(6) .card-media{aspect-ratio:21/9}
+.card-media .bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  transition:transform 1.1s var(--ease),filter .8s var(--ease);filter:saturate(.9);
+}
+.card:hover .card-media .bg{transform:scale(1.05);filter:saturate(1.1)}
+.card-media::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55));opacity:.75;
+}
+.card-tag{
+  position:absolute;top:14px;left:14px;z-index:2;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--paper);
+  background:rgba(10,10,10,.55);border:1px solid var(--line-strong);padding:5px 9px;backdrop-filter:blur(8px);
+}
+.card-index{
+  position:absolute;right:16px;bottom:10px;z-index:2;font-family:var(--serif);font-size:clamp(28px,3.6vw,44px);
+  color:rgba(242,239,233,.5);line-height:1;font-style:italic;
+}
+.card-foot{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:14px}
+.card-foot h3{margin:0;font-size:clamp(15px,1.35vw,20px);font-weight:500;letter-spacing:-.01em}
+.card-foot em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint);white-space:nowrap}
+.card:hover .card-foot h3{color:var(--gold)}
+.card-foot h3{transition:color .4s}
+
+/* ---------- 播放条 / Showreel ---------- */
+.reel{
+  padding:clamp(60px,9vw,120px) 0;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+}
+.reel h2{max-width:24ch}
+.play{
+  display:inline-flex;align-items:center;gap:16px;background:none;border:0;color:var(--paper);
+  cursor:pointer;font:inherit;padding:0;
+}
+.play .ring{
+  width:74px;height:74px;border-radius:50%;border:1px solid var(--line-strong);
+  display:grid;place-items:center;transition:.5s var(--ease);position:relative;flex:none;
+}
+.play .ring svg{width:16px;height:16px;fill:var(--paper);transition:.4s}
+.play:hover .ring{background:var(--gold);border-color:var(--gold);transform:scale(1.06)}
+.play:hover .ring svg{fill:#0a0a0a}
+.play span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-dim)}
+
+/* ---------- SERVICES ---------- */
+.services{padding:clamp(60px,9vw,120px) 0;border-top:1px solid var(--line)}
+.svc{border-top:1px solid var(--line)}
+.svc-row{
+  display:grid;grid-template-columns:70px minmax(0,1.15fr) minmax(0,1.4fr);gap:clamp(16px,3vw,48px);
+  align-items:start;padding:clamp(22px,3.2vw,38px) 0;border-bottom:1px solid var(--line);
+  transition:padding-inline .5s var(--ease),background .5s var(--ease);
+  position:relative;
+}
+.svc-row::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(198,166,103,.07);
+  transition:width .6s var(--ease);
+}
+.svc-row:hover::before{width:100%}
+.svc-row:hover{padding-inline:clamp(8px,1.4vw,18px)}
+.svc-idx{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold);padding-top:6px}
+.svc-row h3{margin:0;font-size:clamp(18px,2.1vw,28px);font-weight:500;letter-spacing:-.01em;line-height:1.25}
+.svc-row h3 em{display:block;font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-faint);margin-top:8px}
+.svc-row p{margin:0;color:var(--paper-dim);font-size:clamp(13.5px,.98vw,15px);line-height:1.85;max-width:46ch}
+
+/* ---------- CLIENTS ---------- */
+.clients{padding:clamp(50px,7vw,90px) 0;border-top:1px solid var(--line)}
+.client-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.client-cell{
+  background:var(--ink);aspect-ratio:2/1;display:grid;place-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--paper-faint);
+  text-transform:uppercase;transition:.4s;
+}
+.client-cell:hover{color:var(--paper);background:#131312}
+.client-cell img{max-height:38px;max-width:72%;object-fit:contain;filter:brightness(0) invert(1);opacity:.72;transition:.4s}
+.client-cell img.keep{filter:none;opacity:.92}
+.client-cell:hover img{filter:none;opacity:1}
+
+/* ---------- CONTACT ---------- */
+.contact{padding:clamp(80px,12vw,170px) 0 clamp(50px,7vw,80px);border-top:1px solid var(--line);position:relative;overflow:hidden}
+.contact::before{
+  content:"";position:absolute;left:50%;top:-20%;width:min(900px,110vw);aspect-ratio:1;translate:-50% 0;
+  background:radial-gradient(circle,rgba(198,166,103,.13),transparent 62%);pointer-events:none;
+}
+.contact h2{font-size:clamp(34px,6.2vw,86px);line-height:1.02;max-width:16ch}
+.contact-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(32px,5vw,80px);margin-top:clamp(34px,5vw,56px);align-items:start}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.contact-list{display:grid;gap:22px}
+.contact-list dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--paper-faint);margin-bottom:6px}
+.contact-list dd{margin:0;font-size:clamp(14px,1.2vw,17px);letter-spacing:.01em}
+.contact-list dd a{border-bottom:1px solid var(--line-strong);padding-bottom:2px;transition:.3s}
+.contact-list dd a:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:26px var(--pad);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-faint)}
+footer a:hover{color:var(--paper)}
+.to-top{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.to-top svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+/* ---------- 弹层 ---------- */
+.modal{
+  position:fixed;inset:0;z-index:300;background:rgba(6,6,6,.94);backdrop-filter:blur(10px);
+  display:none;place-items:center;padding:clamp(16px,4vw,60px);
+}
+.modal.open{display:grid}
+.modal video{width:100%;max-width:1100px;max-height:80vh;background:#000;border:1px solid var(--line)}
+.modal .hint{color:var(--paper-dim);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-align:center;line-height:2}
+.modal-close{position:absolute;top:22px;right:22px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-strong);background:none;color:var(--paper);cursor:pointer;font-size:20px;line-height:1}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1000px){
+  .nav-links{display:none}
+  .burger{display:block}
+  .about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .reel{grid-template-columns:1fr}
+  .card,.card:nth-child(1),.card:nth-child(6){grid-column:span 6}
+  .card-media,.card:nth-child(1) .card-media,.card:nth-child(6) .card-media{aspect-ratio:4/3}
+  .svc-row{grid-template-columns:44px 1fr;gap:12px 16px}
+  .svc-row p{grid-column:2}
+}
+@media (max-width:620px){
+  .nav-right .btn{display:none}
+  .brand small{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  .client-grid{grid-template-columns:repeat(3,1fr)}
+  .hero-foot{font-size:9px;letter-spacing:.14em}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- ================= 导航 ================= -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="home">
+    <img src="assets/logo-mark.png" alt="Blank Vision" style="height:26px;width:auto;filter:drop-shadow(0 0 12px rgba(242,239,233,.12))">
+    <span class="brand-cn" data-brand="cn">空白视觉</span><small class="brand-en" data-brand="en">BLANK VISION</small>
+  </a>
+  <nav class="nav-links">
+    <a href="#work" data-i18n="nav.work">作品</a>
+    <a href="#services" data-i18n="nav.services">服务</a>
+    <a href="#about" data-i18n="nav.about">关于</a>
+    <a href="#contact" data-i18n="nav.contact">联系</a>
+  </nav>
+  <div class="nav-right">
+    <div class="lang" role="group" aria-label="language">
+      <button type="button" data-lang="zh" class="on">中</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a class="btn btn--gold" href="#contact">
+      <span data-i18n="nav.cta">开始合作</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <button class="burger" id="burger" aria-label="menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <a href="#work" data-i18n="nav.work">作品</a>
+  <a href="#services" data-i18n="nav.services">服务</a>
+  <a href="#about" data-i18n="nav.about">关于</a>
+  <a href="#contact" data-i18n="nav.contact">联系</a>
+</div>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <div class="fallback"></div>
+    <!-- 主视觉视频：把成片放到 assets/video/hero.mp4，封面图 assets/video/hero-poster.jpg -->
+    <video id="heroVideo" autoplay muted loop playsinline preload="metadata"
+           poster="assets/video/hero-poster.jpg">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="hero-inner">
+    <p class="eyebrow">
+      <span data-i18n="hero.eyebrow">影像 · CG · AI 内容</span>
+    </p>
+    <h1>
+      <span class="line"><span data-i18n="hero.t1">你想成为谁，</span></span>
+      <span class="line line--2"><span data-i18n="hero.t2">让世界看见。</span></span>
+    </h1>
+    <p class="hero-sub" data-i18n="hero.sub">
+      你负责想成为谁，我们负责让世界看见。空白视觉为消费电子、新能源与时尚品牌打造影像、CG 与 AI 内容，让产品被记住。
+    </p>
+    <div class="hero-actions">
+      <button class="btn btn--gold" type="button" data-open-reel>
+        <span data-i18n="hero.cta1">观看 Showreel</span>
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <a class="btn" href="#contact"><span data-i18n="hero.cta2">聊聊合作</span></a>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <span data-i18n="hero.meta1">深圳 · 全球交付</span>
+    <span class="scroll"><span data-i18n="hero.meta2">向下滚动</span><i></i></span>
+  </div>
+</section>
+
+<!-- ================= 跑马灯 ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>产品 TVC PRODUCT FILM</span><span>三维动画 CG / 3D</span><span>AI 动画 AI ANIMATION</span><span>品牌片 BRAND FILM</span><span>营销全案 CAMPAIGN</span><span>媒介投放 MEDIA</span><span>达人种草 KOL SEEDING</span><span>直播 LIVE</span>
+    <span>产品 TVC PRODUCT FILM</span><span>三维动画 CG / 3D</span><span>AI 动画 AI ANIMATION</span><span>品牌片 BRAND FILM</span><span>营销全案 CAMPAIGN</span><span>媒介投放 MEDIA</span><span>达人种草 KOL SEEDING</span><span>直播 LIVE</span>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section class="about wrap" id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="label" data-i18n="about.label">关于我们</p>
+      <h2 data-i18n="about.title">从一张<em>空白</em>开始，<br>到一次被记住。</h2>
+    </div>
+    <div class="about-copy reveal">
+      <p data-i18n="about.p1">空白视觉成立于 2023 年，是一家以影像与三维为核心的内容公司。我们为华为、宁德时代、COOFANDY 等品牌提供产品 TVC、CG 动画与 AI 内容，从创意脚本到成片交付一体完成。</p>
+      <p data-i18n="about.p2">我们相信，克制而准确的画面比堆砌更有力量。先想清楚品牌要成为谁，再用镜头、三维与 AI，把它变成可以被看见、被记住的现实。</p>
+    </div>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><b>2023</b><span data-i18n="about.s1">成立年份</span></div>
+    <div class="stat"><b>50<i>+</i></b><span data-i18n="about.s2">交付项目</span></div>
+    <div class="stat"><b>20<i>+</i></b><span data-i18n="about.s3">服务品牌</span></div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section class="work wrap" id="work">
+  <div class="work-head">
+    <div class="reveal">
+      <p class="label" data-i18n="work.label">精选作品</p>
+      <h2 data-i18n="work.title">每一个项目，<br>都有它自己的<em>呼吸</em>。</h2>
+    </div>
+    <p class="lead reveal" style="max-width:34ch" data-i18n="work.desc">以下为部分公开案例，更多商业项目可预约线下观看。</p>
+  </div>
+
+  <div class="grid">
+    <!-- 案例 1：封面图放 assets/work/case-01.jpg（建议 2400×1030） -->
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-01.jpg'),linear-gradient(135deg,#1b2a24,#0d1210 60%,#2a2118)"></div>
+        <span class="card-tag" data-i18n="work.c1c">智慧空间 · TVC</span>
+        <span class="card-index">01</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c1t">引望影音空间产品视频</h3>
+        <em>Smart AV Space</em>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-02.jpg'),linear-gradient(135deg,#2b1f14,#101010 65%)"></div>
+        <span class="card-tag" data-i18n="work.c2c">智能家居 · TVC</span>
+        <span class="card-index">02</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c2t">华为智能门锁</h3>
+        <em>HUAWEI Smart Lock</em>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-03.jpg'),linear-gradient(135deg,#15202b,#0b0f14 60%,#1d2a2a)"></div>
+        <span class="card-tag" data-i18n="work.c3c">品牌片 · Brand Film</span>
+        <span class="card-index">03</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c3t">宁德时代品牌片</h3>
+        <em>CATL Brand Film</em>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-04.jpg'),linear-gradient(135deg,#241a22,#0d0b0d 60%)"></div>
+        <span class="card-tag" data-i18n="work.c4c">产品发布 · Launch</span>
+        <span class="card-index">04</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c4t">回力产品发布视频</h3>
+        <em>Warrior Launch</em>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-05.jpg'),linear-gradient(135deg,#1a1f18,#0a0c0a 60%,#262019)"></div>
+        <span class="card-tag" data-i18n="work.c5c">服装品牌 · TVC</span>
+        <span class="card-index">05</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c5t">COOFANDY 服装品牌视频</h3>
+        <em>COOFANDY</em>
+      </div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-media">
+        <div class="bg" style="background-image:url('assets/work/case-06.jpg'),linear-gradient(135deg,#101418,#08090a 60%,#22201b)"></div>
+        <span class="card-tag" data-i18n="work.c6c">三维 TVC · CG</span>
+        <span class="card-index">06</span>
+      </div>
+      <div class="card-foot">
+        <h3 data-i18n="work.c6t">华为音响产品视频</h3>
+        <em>HUAWEI Sound · 3D</em>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= SHOWREEL ================= -->
+<section class="reel wrap">
+  <div class="reveal">
+    <p class="label" data-i18n="reel.label">年度精选</p>
+    <h2 data-i18n="reel.title">一支片子，<br>看完我们<em>做了什么</em>。</h2>
+  </div>
+  <button class="play reveal" type="button" data-open-reel>
+    <span class="ring"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg></span>
+    <span data-i18n="reel.cta">播放 Showreel</span>
+  </button>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="services wrap" id="services">
+  <div class="sec-head reveal">
+    <p class="label" data-i18n="services.label">服务能力</p>
+    <h2 data-i18n="services.title">从一句<em>核心表达</em>，<br>到一条能传播的片子。</h2>
+  </div>
+
+  <div class="svc">
+    <div class="svc-row reveal">
+      <span class="svc-idx">01</span>
+      <h3><span data-i18n="s1t">视频 &amp; 产品拍摄</span><em>Video Production</em></h3>
+      <p data-i18n="s1d">从脚本、布光到成片，商业级实拍全流程：产品、人物、空间场景均可交付。</p>
+    </div>
+    <div class="svc-row reveal">
+      <span class="svc-idx">02</span>
+      <h3><span data-i18n="s2t">CG / 三维动画</span><em>CG &amp; 3D Animation</em></h3>
+      <p data-i18n="s2d">建模、材质、渲染与合成，在三维中重建产品的每一次拆解、爆炸与场景想象。</p>
+    </div>
+    <div class="svc-row reveal">
+      <span class="svc-idx">03</span>
+      <h3><span data-i18n="s3t">AI 动画制作</span><em>AI Animation Production</em></h3>
+      <p data-i18n="s3d">AI 生成与传统管线结合，用更快的迭代速度和更优的成本，实现风格化视觉表达。</p>
+    </div>
+    <div class="svc-row reveal">
+      <span class="svc-idx">04</span>
+      <h3><span data-i18n="s4t">营销全案策划</span><em>Full Marketing Campaign</em></h3>
+      <p data-i18n="s4d">从洞察、策略到创意执行，一体规划品牌传播的完整链路，让内容有处可去。</p>
+    </div>
+    <div class="svc-row reveal">
+      <span class="svc-idx">05</span>
+      <h3><span data-i18n="s5t">媒介投放种草</span><em>Media Placement &amp; Seeding</em></h3>
+      <p data-i18n="s5d">覆盖主流社交平台的内容分发与达人种草矩阵，让好内容真正触达目标人群。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CLIENTS ================= -->
+<section class="clients wrap">
+  <p class="label reveal" data-i18n="clients.label">合作品牌</p>
+  <div class="client-grid reveal">
+    <!-- 客户 logo：assets/clients/client-01.png … client-15.png，默认反白处理，悬停显示原色 -->
+    <div class="client-cell"><img src="assets/clients/client-01.png" alt="Tencent 腾讯" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-02.png" alt="OPPO" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-03.png" alt="Louis Vuitton" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-04.png" alt="Adidas" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-05.png" alt="Huawei 华为" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-06.png" alt="CATL 宁德时代" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-07.png" alt="Warrior 回力" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-08.png" alt="COOFANDY" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-09.png" alt="Chaumet" loading="lazy"></div>
+    <div class="client-cell"><img class="keep" src="assets/clients/client-10.png" alt="HomeAegis" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-11.png" alt="Corona" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-12.png" alt="Roborock 石头科技" loading="lazy"></div>
+    <div class="client-cell"><img class="keep" src="assets/clients/client-13.png" alt="Xiaohongshu 小红书" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-14.png" alt="Chopard 萧邦" loading="lazy"></div>
+    <div class="client-cell"><img src="assets/clients/client-15.png" alt="HOURGLASS" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact wrap" id="contact">
+  <div class="reveal">
+    <p class="label" data-i18n="contact.label">开始合作</p>
+    <h2 data-i18n="contact.title">有一个想法？<br>让我们把它<em>拍出来</em>。</h2>
+  </div>
+
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="lead" data-i18n="contact.desc">把你的品牌、目标和时间节点发给我们，两个工作日内回复初步创意方向与报价区间。</p>
+      <div class="contact-actions">
+        <a class="btn btn--gold" data-brand-href="mailto" href="#">
+          <span data-i18n="contact.cta1">发送合作需求</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn" data-brand-href="phone" href="#"><span data-i18n="contact.cta2">电话沟通</span></a>
+      </div>
+    </div>
+    <dl class="contact-list reveal">
+      <div><dt>Email</dt><dd><a data-brand-href="mailto" href="#" data-brand="email">450356660@qq.com</a></dd></div>
+      <div><dt>Phone</dt><dd><a data-brand-href="tel" href="#" data-brand="phone">+86 147 7642 6212</a></dd></div>
+      <div><dt>WeChat</dt><dd data-brand="wechat">14776426212</dd></div>
+      <div><dt data-i18n="contact.addrLabel">Studio</dt><dd data-i18n="contact.addr">深圳市 · 空白视觉</dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>© <span id="year">2026</span> <span data-i18n="footer.company">深圳市空白视觉科技有限公司</span> · <span data-i18n="footer.copy">保留所有权利</span></span>
+  <button class="to-top" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+    <span>TOP</span>
+  </button>
+</footer>
+
+<!-- ================= SHOWREEL 弹层 ================= -->
+<div class="modal" id="reelModal" role="dialog" aria-modal="true" aria-label="showreel">
+  <button class="modal-close" id="modalClose" aria-label="close">×</button>
+  <div id="modalBody">
+    <video id="reelVideo" controls playsinline preload="none">
+      <source src="assets/video/showreel.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1) 品牌配置 —— 只改这里，全站同步
+   ============================================================ */
+const CONFIG = {
+  cn: '空白视觉',
+  en: 'BLANK VISION',
+  email: '450356660@qq.com',
+  phone: '+86 147 7642 6212',
+  wechat: '14776426212'
+};
+
+/* ============================================================
+   2) 文案词典 —— 中英双语
+   ============================================================ */
+const I18N = {
+  zh: {
+    'nav.work':'作品','nav.services':'服务','nav.about':'关于','nav.contact':'联系','nav.cta':'开始合作',
+    'hero.eyebrow':'影像 · CG · AI 内容',
+    'hero.t1':'你想成为谁，','hero.t2':'让世界看见。',
+    'hero.sub':'你负责想成为谁，我们负责让世界看见。空白视觉为消费电子、新能源与时尚品牌打造影像、CG 与 AI 内容，让产品被记住。',
+    'hero.cta1':'观看 Showreel','hero.cta2':'聊聊合作',
+    'hero.meta1':'深圳 · 影像与三维','hero.meta2':'向下滚动',
+    'about.label':'关于我们',
+    'about.title':'从一张<em>空白</em>开始，<br>到一次被记住。',
+    'about.p1':'空白视觉成立于 2023 年，是一家以影像与三维为核心的内容公司。我们为华为、宁德时代、COOFANDY 等品牌提供产品 TVC、CG 动画与 AI 内容，从创意脚本到成片交付一体完成。',
+    'about.p2':'我们相信，克制而准确的画面比堆砌更有力量。先想清楚品牌要成为谁，再用镜头、三维与 AI，把它变成可以被看见、被记住的现实。',
+    'about.s1':'成立年份','about.s2':'交付项目','about.s3':'服务品牌',
+    'work.label':'精选作品',
+    'work.title':'每一个项目，<br>都有它自己的<em>呼吸</em>。',
+    'work.desc':'以下为部分公开案例，更多商业项目可预约线下观看。',
+    'work.c1t':'引望影音空间产品视频','work.c1c':'智慧空间 · TVC',
+    'work.c2t':'华为智能门锁','work.c2c':'智能家居 · TVC',
+    'work.c3t':'宁德时代品牌片','work.c3c':'品牌片 · Brand Film',
+    'work.c4t':'回力产品发布视频','work.c4c':'产品发布 · Launch',
+    'work.c5t':'COOFANDY 服装品牌视频','work.c5c':'服装品牌 · TVC',
+    'work.c6t':'华为音响产品视频','work.c6c':'三维 TVC · CG',
+    'reel.label':'年度精选','reel.title':'一支片子，<br>看完我们<em>做了什么</em>。','reel.cta':'播放 Showreel',
+    'services.label':'服务能力',
+    'services.title':'从一句<em>核心表达</em>，<br>到一条能传播的片子。',
+    's1t':'视频 & 产品拍摄','s1d':'从脚本、布光到成片，商业级实拍全流程：产品、人物、空间场景均可交付。',
+    's2t':'CG / 三维动画','s2d':'建模、材质、渲染与合成，在三维中重建产品的每一次拆解、爆炸与场景想象。',
+    's3t':'AI 动画制作','s3d':'AI 生成与传统管线结合，用更快的迭代速度和更优的成本，实现风格化视觉表达。',
+    's4t':'营销全案策划','s4d':'从洞察、策略到创意执行，一体规划品牌传播的完整链路，让内容有处可去。',
+    's5t':'媒介投放种草','s5d':'覆盖主流社交平台的内容分发与达人种草矩阵，让好内容真正触达目标人群。',
+    'clients.label':'合作品牌',
+    'contact.label':'开始合作',
+    'contact.title':'有一个想法？<br>让我们把它<em>拍出来</em>。',
+    'contact.desc':'把你的品牌、目标和时间节点发给我们，两个工作日内回复初步创意方向与报价区间。',
+    'contact.cta1':'发送合作需求','contact.cta2':'电话沟通',
+    'contact.addrLabel':'工作室','contact.addr':'深圳市 · 空白视觉',
+    'footer.company':'深圳市空白视觉科技有限公司','footer.copy':'保留所有权利'
+  },
+  en: {
+    'nav.work':'Work','nav.services':'Services','nav.about':'Studio','nav.contact':'Contact','nav.cta':'Start a project',
+    'hero.eyebrow':'Film · CG · AI Content',
+    'hero.t1':'You imagine it.','hero.t2':'We make it seen.',
+    'hero.sub':'You decide who to become — we make the world see it. Blank Vision creates film, CG and AI content for consumer tech, new energy and fashion brands.',
+    'hero.cta1':'Watch the reel','hero.cta2':'Talk to us',
+    'hero.meta1':'Shenzhen · Film & 3D','hero.meta2':'Scroll',
+    'about.label':'The Studio',
+    'about.title':'From a <em>blank page</em><br>to a memory that stays.',
+    'about.p1':'Founded in 2023, Blank Vision is a content studio built on film and 3D. We deliver product TVCs, CG animation and AI content for brands such as Huawei, CATL and COOFANDY — from script to final cut, in one house.',
+    'about.p2':'We believe restraint beats excess: a precise frame is stronger than a crowded one. First decide who the brand wants to become — then lens, 3D and AI turn it into something the world can see and remember.',
+    'about.s1':'Founded','about.s2':'Projects','about.s3':'Brands',
+    'work.label':'Selected Work',
+    'work.title':'Every project<br>has its own <em>breath</em>.',
+    'work.desc':'A selection of public cases. Further commercial work available in a private screening.',
+    'work.c1t':'YinWang Smart AV Space','work.c1c':'Smart Space · TVC',
+    'work.c2t':'HUAWEI Smart Lock','work.c2c':'Smart Home · TVC',
+    'work.c3t':'CATL Brand Film','work.c3c':'Brand Film',
+    'work.c4t':'Warrior Product Launch','work.c4c':'Product · Launch',
+    'work.c5t':'COOFANDY Brand Film','work.c5c':'Fashion · TVC',
+    'work.c6t':'HUAWEI Sound','work.c6c':'3D TVC · CG',
+    'reel.label':'Showreel','reel.title':'One film.<br>Everything <em>we make</em>.','reel.cta':'Play the reel',
+    'services.label':'Capabilities',
+    'services.title':'From one <em>core idea</em><br>to a film that travels.',
+    's1t':'Video & Product Production','s1d':'Commercial-grade live action end to end — script, lighting, edit and delivery for products, people and spaces.',
+    's2t':'CG & 3D Animation','s2d':'Modeling, shading, rendering and compositing — every teardown, explosion and scene rebuilt in 3D.',
+    's3t':'AI Animation','s3d':'AI pipelines fused with craft — stylized visuals at faster iterations and sharper cost.',
+    's4t':'Full Marketing Campaign','s4d':'Insight, strategy and creative execution planned as one journey, so content has somewhere to go.',
+    's5t':'Media & Seeding','s5d':'Distribution and KOL seeding across mainstream social platforms, reaching the audience that matters.',
+    'clients.label':'Clients',
+    'contact.label':'Let’s talk',
+    'contact.title':'Got a story?<br>Let’s put it <em>on screen</em>.',
+    'contact.desc':'Send us your brand, your goal and your timeline. You will get an initial creative direction and a budget range within two working days.',
+    'contact.cta1':'Send a brief','contact.cta2':'Call us',
+    'contact.addrLabel':'Studio','contact.addr':'Shenzhen · Blank Vision',
+    'footer.company':'Shenzhen Blank Vision Technology Co., Ltd.','footer.copy':'All rights reserved'
+  }
+};
+
+/* ============================================================
+   3) 语言切换
+   ============================================================ */
+const html = document.documentElement;
+const langBtns = document.querySelectorAll('[data-lang]');
+let currentLang = 'zh';
+
+function applyWordmark(lang){
+  document.querySelectorAll('.brand .brand-cn').forEach(el => el.textContent = lang === 'en' ? 'Blank Vision' : CONFIG.cn);
+  document.querySelectorAll('.brand .brand-en').forEach(el => el.textContent = lang === 'en' ? 'EST. 2023' : CONFIG.en);
+}
+function setLang(lang){
+  currentLang = lang;
+  const dict = I18N[lang] || I18N.zh;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] != null) el.innerHTML = dict[key];
+  });
+  html.lang = lang === 'en' ? 'en' : 'zh-CN';
+  langBtns.forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+  applyWordmark(lang);
+  try { localStorage.setItem('lang', lang); } catch(e){}
+}
+langBtns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+setLang((() => { try { return localStorage.getItem('lang') || 'zh'; } catch(e){ return 'zh'; } })());
+
+/* ============================================================
+   4) 品牌信息注入
+   ============================================================ */
+document.querySelectorAll('[data-brand]').forEach(el => {
+  const v = CONFIG[el.dataset.brand];
+  if (v) el.textContent = v;
+});
+document.querySelectorAll('[data-brand-href]').forEach(el => {
+  const t = el.dataset.brandHref;
+  el.href = t === 'mailto' ? 'mailto:' + CONFIG.email
+          : t === 'tel'    ? 'tel:' + CONFIG.phone.replace(/\s/g,'')
+          : '#';
+});
+document.title = CONFIG.cn + ' · Blank Vision — 影像 · CG · AI 内容';
+applyWordmark(currentLang);
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ============================================================
+   5) 导航 / 滚动
+   ============================================================ */
+const nav = document.getElementById('nav');
+const bar = document.querySelector('.progress i');
+function onScroll(){
+  nav.classList.toggle('solid', window.scrollY > 40);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+const sheet = document.getElementById('sheet');
+document.getElementById('burger').addEventListener('click', () => sheet.classList.toggle('open'));
+sheet.querySelectorAll('a').forEach(a => a.addEventListener('click', () => sheet.classList.remove('open')));
+
+/* ============================================================
+   6) 入场动画
+   ============================================================ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============================================================
+   7) Showreel 弹层（无素材时给出提示）
+   ============================================================ */
+const modal = document.getElementById('reelModal');
+const reelVideo = document.getElementById('reelVideo');
+const modalBody = document.getElementById('modalBody');
+let reelFails = 0;
+
+document.querySelectorAll('[data-open-reel]').forEach(b => b.addEventListener('click', () => {
+  modal.classList.add('open');
+  reelVideo.currentTime = 0;
+  reelVideo.play().catch(() => {});
+}));
+
+reelVideo.addEventListener('error', () => {
+  if (reelFails++) return;
+  modalBody.innerHTML = '<p class="hint">SHOWREEL 尚未上传 / SHOWREEL NOT UPLOADED<br>请放入 assets/video/showreel.mp4</p>';
+});
+function closeModal(){
+  modal.classList.remove('open');
+  reelVideo.pause();
+  reelVideo.currentTime = 0;
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* 主视觉视频加载失败则静默回退到渐变底 */
+document.getElementById('heroVideo').addEventListener('error', function(){ this.style.display = 'none'; }, true);
+</script>
+</body>
+</html>
